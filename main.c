@@ -1,26 +1,82 @@
 #include <stdio.h>
 #include <stdlib.h>
-int main(int argc, char **argv)
-{ float a,b,c, delta, x1,x2;
-printf("Entrez les valeurs des coefficients a, b et c du trinome(a doit etre non-nul))\n");
-printf("a=");scanf("%f",&a);
-printf("b=");scanf("%f",&b);
-printf("c=");scanf("%f",&c);
-delta = b*b-4*a*c;
-printf("L'equation %.2fx^2 + %.2fx + %.2f = 0 ",a,b,c);
-if(delta>0)
-{ printf("admet deux solutions : ");
-x1 = (-b-sqrt(delta))/(2*a);
-x2 = (-b+sqrt(delta))/(2*a);
-printf("x1 = %f et x2 = %f\n",x1,x2);
-}
-else if(delta==0)
-{ printf("admet exactement une solution : ");
-x1 = -b/a;
-printf("x = %f\n",x1);
-}
-else //if (delta<0)
-{ printf("n'admet pas de solution.\n");
-}
-return EXIT_SUCCESS;
-}
+//L'enregistrement du cellule ou composant du cellule
+struct node{
+  int val;
+  struct node *next;
+};
+
+//Creation d'une liste chainée
+struct node*creatlist(int n){
+  struct node *p,*head,*Q; //Déclaration des variables de la liste
+  int x,i;
+
+  p=malloc(sizeof(struct node)); //Allocation d'une espace
+  scanf("%d",&x); //Ajout du première élements
+  p->val=x; //Information que contient la cellule
+  p->next=NULL; //Le pointeur de la cellule
+  head=p; //Relier l'en tête a la cellule
+
+  for(i=1;i<n;i++){
+    Q=p; //Attribution p à Q
+    p=malloc(sizeof(struct node)); //Allocation d'une espace
+    scanf("%d",&x); //Ajout du première élements
+    p->val=x; //Information que contient la cellule
+    p->next=NULL; //Le pointeur de la cellule
+    Q->next=p; //Relier le precedent au nouveau
+  }
+  return head;
+  }
+
+//Lecture ou affichage de la liste chainée
+void display_list(struct node *head){
+    while(head!=NULL){ //Verification que nous ne somme pas encore a la fin
+      printf("%d ", head->val); //Affifichage de chaque élement de la liste
+      head=head->next; //Passage a l'address de l'élement suivant
+    }
+  }
+
+//Ajouter a la fin de la liste chainée
+void addTail(struct node *head, int addT){
+  struct node *p; //Nouveau P
+  p=malloc(sizeof(struct node)); //Allocation d'une espace pour p
+  p->val=addT; //Information que contient la cellule
+  p->next=NULL; //Le pointeur de la cellule
+  while(head->next!=NULL){ //Parcourir jusqu'a la fin
+    head=head->next;
+  }
+  head->next=p; //Relier le p a la fin
+  }
+
+//Ajouter au debut de la fonction
+struct node *addHead(struct node *head, int addH){
+  struct node *p;
+  p=(struct note*)malloc(sizeof(struct node));
+  p->val=addH;
+  p->next=head;
+  head=p;
+  return head;
+  }
+
+struct node *init_node(void){
+  struct node *n=(struct note*)malloc(sizeof(struct node));
+  n->val=-1;
+  return n;
+  }
+
+int main(){
+
+  struct node *head;
+  //head=init_node();
+  head=creatlist(5);
+  display_list(head);
+  printf("\n");
+  head=addHead(head,23);
+  display_list(head);
+  printf("\n");
+  addTail(head,54);
+  display_list(head);
+
+
+  return 0;
+ }
